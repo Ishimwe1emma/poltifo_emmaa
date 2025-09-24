@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diarrhea Data Collection Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        :root {
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --pink-400: #f472b6;
+            --pink-500: #ec4899;
+            --orange-400: #fb923c;
+            --orange-500: #f97316;
+            --red-400: #f87171;
+            --red-500: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --green-500: #10b981;
+            --green-600: #059669;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom right, var(--blue-50), #e0e7ff, #f0f4ff);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #222936;
+            padding: 1.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2));
+        }
+
+        .header-content {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.875rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #bfdbfe;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background-color: #E83C75;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--gray-300);
+            color: var(--gray-700);
+            background: white;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-100);
+        }
+
+        .btn-outline:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            padding: 2rem;
+            background: linear-gradient(to right, var(--gray-50), rgba(191, 219, 254, 0.3));
+        }
+
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .step-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s;
+            position: relative;
+        }
+
+        .step-icon.active {
+            transform: scale(1.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon.active::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: white;
+            opacity: 0.3;
+            animation: ping 1.5s infinite;
+        }
+
+        .step-icon.completed {
+            background-color: var(--green-500);
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon.inactive {
+            background-color: var(--gray-200);
+        }
+
+        .step-title {
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .step-title.active {
+            color: var(--gray-900);
+        }
+
+        .step-title.completed {
+            color: var(--green-600);
+        }
+
+        .step-title.inactive {
+            color: var(--gray-500);
+        }
+
+        .step-connector {
+            flex: 1;
+            height: 0.125rem;
+            margin: 0 1rem;
+            background-color: var(--gray-200);
+            border-radius: 0.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-connector-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, var(--blue-500), var(--green-500));
+            transition: width 0.7s;
+        }
+
+        .form-section {
+            padding: 2rem;
+            min-height: 600px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .form-step {
+            width: 100%;
+            transition: all 0.5s;
+        }
+
+        .form-step.hidden {
+            opacity: 0;
+            transform: translateX(2.5rem);
+            display: none;
+        }
+
+        .form-step.visible {
+            opacity: 1;
+            transform: translateX(0);
+            display: block;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .step-icon-large {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-header h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--gray-900);
+        }
+
+        .step-header p {
+            color: var(--gray-600);
+            margin-top: 0.25rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-group {
+            transition: color 0.3s;
+        }
+
+        .form-group:hover label {
+            color: var(--blue-600);
+        }
+
+        .form-group.step2:hover label {
+            color: var(--pink-500);
+        }
+
+        .form-group.step3:hover label {
+            color: var(--orange-500);
+        }
+
+        .form-group.step4:hover label {
+            color: var(--red-500);
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.75rem;
+            transition: color 0.3s;
+        }
+
+        .input-field, .select-field, .textarea-field {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+            background: white;
+            font-size: 1rem;
+        }
+
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .input-field:hover, .select-field:hover, .textarea-field:hover {
+            border-color: var(--gray-300);
+        }
+
+        .select-field {
+            cursor: pointer;
+        }
+
+        .textarea-field {
+            resize: none;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .input-group .input-field {
+            flex: 1;
+        }
+
+        .input-group .select-field {
+            width: 8rem;
+        }
+
+        .navigation {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(to right, var(--gray-50), rgba(191, 219, 254, 0.3));
+            border-top: 1px solid rgba(229, 231, 235, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            transition: opacity 0.3s;
+        }
+
+        .modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transition: all 0.5s;
+            text-align: center;
+        }
+
+        .modal.hidden .modal-content {
+            transform: scale(0.75) rotate(12deg);
+        }
+
+        .modal.visible .modal-content {
+            transform: scale(1) rotate(0);
+        }
+
+        .modal-icon {
+            width: 5rem;
+            height: 5rem;
+            background-color: var(--green-500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            animation: bounce 1s infinite;
+        }
+
+        .modal h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal p {
+            color: var(--gray-600);
+        }
+
+        .database-section {
+            padding: 2rem;
+        }
+
+        .database-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .database-title {
+            display: flex;
+            align-items: center;
+        }
+
+        .database-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(to right, var(--blue-500), var(--blue-600));
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .database-title h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--gray-900);
+        }
+
+        .database-title p {
+            color: var(--gray-600);
+            margin-top: 0.25rem;
+        }
+
+        .record-count {
+            background: linear-gradient(to right, var(--blue-500), var(--blue-600));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: bold;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-database {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: linear-gradient(to bottom right, var(--gray-50), var(--gray-100));
+            border-radius: 1rem;
+            border: 2px dashed var(--gray-200);
+        }
+
+        .empty-icon {
+            width: 6rem;
+            height: 6rem;
+            background-color: var(--gray-200);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .empty-database h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-database p {
+            color: var(--gray-500);
+        }
+
+        .table-container {
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--gray-200);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table thead {
+            background-color: #222936;
+        }
+
+        .table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: white;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid var(--gray-100);
+            transition: background-color 0.2s;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: var(--gray-50);
+        }
+
+        .table tbody tr:hover {
+            background-color: var(--blue-50);
+        }
+
+        .table td {
+            padding: 1rem 1.5rem;
+            color: var(--gray-700);
+        }
+
+        .dehydration-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border: 1px solid;
+        }
+
+        .dehydration-none {
+            background-color: rgb(220, 252, 231);
+            color: rgb(22, 101, 52);
+            border-color: rgb(187, 247, 208);
+        }
+
+        .dehydration-mild {
+            background-color: rgb(254, 243, 199);
+            color: rgb(146, 64, 14);
+            border-color: rgb(253, 230, 138);
+        }
+
+        .dehydration-moderate {
+            background-color: rgb(254, 243, 199);
+            color: rgb(146, 64, 14);
+            border-color: rgb(253, 230, 138);
+        }
+
+        .dehydration-severe {
+            background-color: rgb(254, 226, 226);
+            color: rgb(153, 27, 27);
+            border-color: rgb(254, 202, 202);
+        }
+
+        @keyframes ping {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(1.25rem);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .background-decoration {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .decoration-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(3rem);
+        }
+
+        .circle-1 {
+            width: 20rem;
+            height: 20rem;
+            top: -10rem;
+            right: -10rem;
+            background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2));
+        }
+
+        .circle-2 {
+            width: 20rem;
+            height: 20rem;
+            bottom: -10rem;
+            left: -10rem;
+            background: linear-gradient(to bottom right, rgba(244, 114, 182, 0.2), rgba(251, 146, 60, 0.2));
+        }
+    </style>
+</head>
+<body>
+    <div class="background-decoration">
+        <div class="decoration-circle circle-1"></div>
+        <div class="decoration-circle circle-2"></div>
+    </div>
+
+    <div class="container">
+        <div class="card" id="main-form">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-content">
+                    <div>
+                        <h1>Diarrhea Data Collection Form</h1>
+                        <p>Children Under 5 Months - Mother's Report</p>
+                    </div>
+                    <button class="btn btn-secondary" id="view-database-btn">
+                        <i class="fas fa-database"></i>
+                        View Database (<span id="record-count">0</span>)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress Steps -->
+            <div class="progress-section">
+                <div class="progress-steps">
+                    <div class="step">
+                        <div class="step-icon active" id="step-1-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span class="step-title active" id="step-1-title">Mother's Information</span>
+                    </div>
+                    <div class="step-connector">
+                        <div class="step-connector-fill" id="step-1-connector"></div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon inactive" id="step-2-icon">
+                            <i class="fas fa-baby"></i>
+                        </div>
+                        <span class="step-title inactive" id="step-2-title">Child Information</span>
+                    </div>
+                    <div class="step-connector">
+                        <div class="step-connector-fill" id="step-2-connector"></div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon inactive" id="step-3-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <span class="step-title inactive" id="step-3-title">Diarrhea Details</span>
+                    </div>
+                    <div class="step-connector">
+                        <div class="step-connector-fill" id="step-3-connector"></div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon inactive" id="step-4-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <span class="step-title inactive" id="step-4-title">Symptoms & Treatment</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Content -->
+            <div class="form-section">
+                <!-- Step 1: Mother's Information -->
+                <div class="form-step visible" id="step-1">
+                    <div class="step-header">
+                        <div class="step-icon-large" style="background: linear-gradient(to right, var(--blue-500), var(--blue-600));">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <h3>Mother's Information</h3>
+                            <p>Please provide the mother's details</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="motherName">Mother's Full Name *</label>
+                            <input type="text" id="motherName" class="input-field" placeholder="Enter mother's full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="motherAge">Age *</label>
+                            <input type="number" id="motherAge" class="input-field" placeholder="Age in years" min="15" max="50" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="education">Education Level</label>
+                            <select id="education" class="select-field">
+                                <option value="">Select education level</option>
+                                <option value="none">No formal education</option>
+                                <option value="primary">Primary education</option>
+                                <option value="secondary">Secondary education</option>
+                                <option value="tertiary">Tertiary education</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number</label>
+                            <input type="tel" id="phoneNumber" class="input-field" placeholder="Enter phone number">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mt-6">
+                        <label for="address">Address</label>
+                        <textarea id="address" class="textarea-field" rows="4" placeholder="Enter complete address"></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 2: Child Information -->
+                <div class="form-step hidden" id="step-2">
+                    <div class="step-header">
+                        <div class="step-icon-large" style="background: linear-gradient(to right, var(--pink-400), var(--pink-500));">
+                            <i class="fas fa-baby text-white"></i>
+                        </div>
+                        <div>
+                            <h3>Child Information</h3>
+                            <p>Details about the child</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group step2">
+                            <label for="childName">Child's Name *</label>
+                            <input type="text" id="childName" class="input-field" placeholder="Enter child's name" required>
+                        </div>
+                        
+                        <div class="form-group step2">
+                            <label for="gender">Gender *</label>
+                            <select id="gender" class="select-field" required>
+                                <option value="">Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step2">
+                            <label for="birthDate">Birth Date *</label>
+                            <input type="date" id="birthDate" class="input-field" required>
+                        </div>
+                        
+                        <div class="form-group step2">
+                            <label for="childAge">Current Age *</label>
+                            <div class="input-group">
+                                <input type="number" id="childAge" class="input-field" placeholder="Age" min="0" max="20" required>
+                                <select id="childAgeUnit" class="select-field">
+                                    <option value="weeks">Weeks</option>
+                                    <option value="months">Months</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group step2">
+                            <label for="birthWeight">Birth Weight (kg)</label>
+                            <input type="number" id="birthWeight" class="input-field" placeholder="Weight in kilograms" step="0.1" min="1" max="6">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Diarrhea Details -->
+                <div class="form-step hidden" id="step-3">
+                    <div class="step-header">
+                        <div class="step-icon-large" style="background: linear-gradient(to right, var(--orange-400), var(--orange-500));">
+                            <i class="fas fa-tint text-white"></i>
+                        </div>
+                        <div>
+                            <h3>Diarrhea Details</h3>
+                            <p>Specific information about the condition</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group step3">
+                            <label for="onsetDate">Onset Date *</label>
+                            <input type="date" id="onsetDate" class="input-field" required>
+                        </div>
+                        
+                        <div class="form-group step3">
+                            <label for="duration">Duration (days) *</label>
+                            <input type="number" id="duration" class="input-field" placeholder="Number of days" min="1" max="30" required>
+                        </div>
+                        
+                        <div class="form-group step3">
+                            <label for="frequency">Frequency per day *</label>
+                            <select id="frequency" class="select-field" required>
+                                <option value="">Select frequency</option>
+                                <option value="3-5">3-5 times</option>
+                                <option value="6-10">6-10 times</option>
+                                <option value="11-15">11-15 times</option>
+                                <option value="more-than-15">More than 15 times</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step3">
+                            <label for="consistency">Stool Consistency *</label>
+                            <select id="consistency" class="select-field" required>
+                                <option value="">Select consistency</option>
+                                <option value="watery">Watery</option>
+                                <option value="loose">Loose</option>
+                                <option value="mucoid">Mucoid</option>
+                                <option value="bloody">Bloody</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step3">
+                            <label for="color">Stool Color</label>
+                            <select id="color" class="select-field">
+                                <option value="">Select color</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="green">Green</option>
+                                <option value="brown">Brown</option>
+                                <option value="white">White/Pale</option>
+                                <option value="red">Red</option>
+                                <option value="black">Black</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step3">
+                            <label for="bloodPresent">Blood Present</label>
+                            <select id="bloodPresent" class="select-field">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                                <option value="unsure">Unsure</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step3">
+                            <label for="mucusPresent">Mucus Present</label>
+                            <select id="mucusPresent" class="select-field">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                                <option value="unsure">Unsure</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Symptoms & Treatment -->
+                <div class="form-step hidden" id="step-4">
+                    <div class="step-header">
+                        <div class="step-icon-large" style="background: linear-gradient(to right, var(--red-400), var(--red-500));">
+                            <i class="fas fa-exclamation-circle text-white"></i>
+                        </div>
+                        <div>
+                            <h3>Associated Symptoms & Treatment</h3>
+                            <p>Additional symptoms and care provided</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group step4">
+                            <label for="fever">Fever</label>
+                            <select id="fever" class="select-field">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step4">
+                            <label for="vomiting">Vomiting</label>
+                            <select id="vomiting" class="select-field">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step4">
+                            <label for="dehydration">Signs of Dehydration</label>
+                            <select id="dehydration" class="select-field">
+                                <option value="">Select</option>
+                                <option value="none">None</option>
+                                <option value="mild">Mild</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="severe">Severe</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step4">
+                            <label for="lethargy">Lethargy/Weakness</label>
+                            <select id="lethargy" class="select-field">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step4">
+                            <label for="feedingDifficulty">Feeding Difficulty</label>
+                            <select id="feedingDifficulty" class="select-field">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step4">
+                            <label for="breastfeeding">Currently Breastfeeding</label>
+                            <select id="breastfeeding" class="select-field">
+                                <option value="">Select</option>
+                                <option value="exclusively">Exclusively</option>
+                                <option value="mixed">Mixed feeding</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step4">
+                            <label for="oralRehydration">ORS Given</label>
+                            <select id="oralRehydration" class="select-field">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group step4">
+                            <label for="hospitalVisit">Hospital Visit</label>
+                            <select id="hospitalVisit" class="select-field">
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group step4 mt-6">
+                        <label for="additionalNotes">Additional Notes</label>
+                        <textarea id="additionalNotes" class="textarea-field" rows="4" placeholder="Any additional observations or notes..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation">
+                <button class="btn btn-outline" id="prev-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Previous
+                </button>
+                
+                <div>
+                    <button class="btn btn-primary" id="next-btn">
+                        Next
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="btn" id="save-btn" style="display: none; background-color: #222936; color: white;">
+                        <i class="fas fa-save"></i>
+                        Save to Database
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database View -->
+        <div class="card hidden" id="database-view">
+            <div class="header">
+                <div class="header-content">
+                    <div>
+                        <h1>Diarrhea Database Management</h1>
+                        <p>Comprehensive healthcare data collection system</p>
+                    </div>
+                    <button class="btn btn-secondary" id="back-to-form-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Form
+                    </button>
+                </div>
+            </div>
+
+            <div class="database-section">
+                <div class="database-header">
+                    <div class="database-title">
+                        <div class="database-icon">
+                            <i class="fas fa-database text-white"></i>
+                        </div>
+                        <div>
+                            <h3>Database Records</h3>
+                            <p>Collected diarrhea data</p>
+                        </div>
+                    </div>
+                    <div class="record-count" id="database-record-count">0 Records</div>
+                </div>
+
+                <div id="database-content">
+                    <!-- Database content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Success Modal -->
+    <div class="modal hidden" id="save-modal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle text-white fa-2x"></i>
+            </div>
+            <h3>Success!</h3>
+            <p>Data saved successfully to database</p>
+        </div>
+    </div>
+
+<script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Application state
+    let currentStep = 1;
+    let completedSteps = new Set();
+    let savedRecords = JSON.parse(localStorage.getItem('diarrheaRecords')) || [];
+    let isAnimating = false;
+
+    // Form data object
+    const formData = {
+        motherName: '',
+        motherAge: '',
+        education: '',
+        phoneNumber: '',
+        address: '',
+        childName: '',
+        childAge: '',
+        childAgeUnit: 'weeks',
+        birthWeight: '',
+        gender: '',
+        birthDate: '',
+        onsetDate: '',
+        duration: '',
+        frequency: '',
+        consistency: '',
+        color: '',
+        bloodPresent: '',
+        mucusPresent: '',
+        fever: '',
+        vomiting: '',
+        dehydration: '',
+        lethargy: '',
+        feedingDifficulty: '',
+        breastfeeding: '',
+        oralRehydration: '',
+        hospitalVisit: '',
+        additionalNotes: ''
+    };
+
+    // DOM Elements
+    const stepElements = {
+        1: document.getElementById('step-1'),
+        2: document.getElementById('step-2'),
+        3: document.getElementById('step-3'),
+        4: document.getElementById('step-4')
+    };
+
+    const stepIcons = {
+        1: document.getElementById('step-1-icon'),
+        2: document.getElementById('step-2-icon'),
+        3: document.getElementById('step-3-icon'),
+        4: document.getElementById('step-4-icon')
+    };
+
+    const stepTitles = {
+        1: document.getElementById('step-1-title'),
+        2: document.getElementById('step-2-title'),
+        3: document.getElementById('step-3-title'),
+        4: document.getElementById('step-4-title')
+    };
+
+    const stepConnectors = {
+        1: document.getElementById('step-1-connector'),
+        2: document.getElementById('step-2-connector'),
+        3: document.getElementById('step-3-connector')
+    };
+
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const viewDatabaseBtn = document.getElementById('view-database-btn');
+    const backToFormBtn = document.getElementById('back-to-form-btn');
+    const mainForm = document.getElementById('main-form');
+    const databaseView = document.getElementById('database-view');
+    const saveModal = document.getElementById('save-modal');
+    const recordCountElements = document.querySelectorAll('#record-count, #database-record-count');
+    const databaseContent = document.getElementById('database-content');
+
+    // Initialize the application
+    function init() {
+        updateRecordCount();
+        updateNavigationButtons();
+        updateProgressIndicator();
+        
+        // Add event listeners
+        prevBtn.addEventListener('click', goToPreviousStep);
+        nextBtn.addEventListener('click', goToNextStep);
+        saveBtn.addEventListener('click', saveFormData);
+        viewDatabaseBtn.addEventListener('click', showDatabaseView);
+        backToFormBtn.addEventListener('click', showFormView);
+        
+        // Add input event listeners to save data as user types
+        addInputEventListeners();
+        
+        // Ensure only step 1 is visible initially
+        resetFormVisibility();
+    }
+
+    // Reset form visibility to show only step 1
+    function resetFormVisibility() {
+        // Hide all steps first
+        for (let i = 1; i <= 4; i++) {
+            stepElements[i].classList.add('hidden');
+            stepElements[i].classList.remove('visible');
+        }
+        
+        // Show only step 1
+        stepElements[1].classList.remove('hidden');
+        stepElements[1].classList.add('visible');
+        
+        currentStep = 1;
+        updateProgressIndicator();
+        updateNavigationButtons();
+    }
+
+    // Add input event listeners to all form fields
+    function addInputEventListeners() {
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                formData[this.id] = this.value;
+            });
+            
+            input.addEventListener('change', function() {
+                formData[this.id] = this.value;
+            });
+        });
+    }
+
+    // Update the progress indicator
+    function updateProgressIndicator() {
+        // Update step icons and titles
+        for (let i = 1; i <= 4; i++) {
+            if (i < currentStep) {
+                stepIcons[i].className = 'step-icon completed';
+                stepIcons[i].innerHTML = '<i class="fas fa-check"></i>';
+                stepTitles[i].className = 'step-title completed';
+            } else if (i === currentStep) {
+                stepIcons[i].className = 'step-icon active';
+                stepTitles[i].className = 'step-title active';
+            } else {
+                stepIcons[i].className = 'step-icon inactive';
+                stepTitles[i].className = 'step-title inactive';
+            }
+        }
+        
+        // Update connector fills
+        if (currentStep > 1) {
+            stepConnectors[1].style.width = '100%';
+        } else {
+            stepConnectors[1].style.width = '0%';
+        }
+        
+        if (currentStep > 2) {
+            stepConnectors[2].style.width = '100%';
+        } else if (currentStep === 2) {
+            stepConnectors[2].style.width = '50%';
+        } else {
+            stepConnectors[2].style.width = '0%';
+        }
+        
+        if (currentStep > 3) {
+            stepConnectors[3].style.width = '100%';
+        } else if (currentStep === 3) {
+            stepConnectors[3].style.width = '50%';
+        } else {
+            stepConnectors[3].style.width = '0%';
+        }
+    }
+
+    // Update navigation buttons based on current step
+    function updateNavigationButtons() {
+        // Previous button
+        if (currentStep === 1) {
+            prevBtn.disabled = true;
+            prevBtn.style.opacity = '0.5';
+        } else {
+            prevBtn.disabled = false;
+            prevBtn.style.opacity = '1';
+        }
+        
+        // Next/Save button
+        if (currentStep === 4) {
+            nextBtn.style.display = 'none';
+            saveBtn.style.display = 'inline-flex';
+        } else {
+            nextBtn.style.display = 'inline-flex';
+            saveBtn.style.display = 'none';
+        }
+    }
+
+    // Show a specific step
+    function showStep(stepNumber) {
+        if (isAnimating) return;
+        
+        isAnimating = true;
+        
+        // Hide all steps first
+        for (let i = 1; i <= 4; i++) {
+            stepElements[i].classList.remove('visible');
+            stepElements[i].classList.add('hidden');
+        }
+        
+        // Show new step after a short delay
+        setTimeout(() => {
+            currentStep = stepNumber;
+            stepElements[currentStep].classList.remove('hidden');
+            stepElements[currentStep].classList.add('visible');
+            
+            updateProgressIndicator();
+            updateNavigationButtons();
+            
+            isAnimating = false;
+        }, 300);
+    }
+
+    // Go to the next step
+    function goToNextStep() {
+        if (currentStep < 4) {
+            // Validate current step before proceeding
+            if (validateCurrentStep()) {
+                showStep(currentStep + 1);
+            }
+        }
+    }
+
+    // Go to the previous step
+    function goToPreviousStep() {
+        if (currentStep > 1) {
+            showStep(currentStep - 1);
+        }
+    }
+
+    // Validate the current step
+    function validateCurrentStep() {
+        let isValid = true;
+        const currentStepElement = stepElements[currentStep];
+        const requiredFields = currentStepElement.querySelectorAll('[required]');
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.style.borderColor = 'var(--red-500)';
+                field.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.1)';
+                
+                // Remove error styling when user starts typing
+                field.addEventListener('input', function() {
+                    this.style.borderColor = 'var(--gray-200)';
+                    this.style.boxShadow = 'none';
+                }, { once: true });
+            }
+        });
+        
+        if (!isValid) {
+            // Show error animation
+            currentStepElement.style.animation = 'none';
+            setTimeout(() => {
+                currentStepElement.style.animation = 'shake 0.5s ease-in-out';
+            }, 10);
+            
+            // Add shake animation to CSS if not already present
+            if (!document.querySelector('#shake-animation')) {
+                const style = document.createElement('style');
+                style.id = 'shake-animation';
+                style.textContent = `
+                    @keyframes shake {
+                        0%, 100% { transform: translateX(0); }
+                        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                        20%, 40%, 60%, 80% { transform: translateX(5px); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        return isValid;
+    }
+
+    // Save form data to localStorage
+    function saveFormData() {
+        if (validateCurrentStep()) {
+            // Create a unique ID for the record
+            const recordId = Date.now().toString();
+            
+            // Create the record object
+            const record = {
+                id: recordId,
+                timestamp: new Date().toISOString(),
+                ...formData
+            };
+            
+            // Add to saved records
+            savedRecords.push(record);
+            
+            // Save to localStorage
+            localStorage.setItem('diarrheaRecords', JSON.stringify(savedRecords));
+            
+            // Update record count
+            updateRecordCount();
+            
+            // Show success modal
+            showSaveModal();
+            
+            // Reset form after a delay
+            setTimeout(() => {
+                resetForm();
+                resetFormVisibility(); // Ensure only step 1 is visible
+            }, 2000);
+        }
+    }
+
+    // Show the save success modal
+    function showSaveModal() {
+        saveModal.classList.remove('hidden');
+        saveModal.classList.add('visible');
+        
+        setTimeout(() => {
+            saveModal.classList.remove('visible');
+            saveModal.classList.add('hidden');
+        }, 2000);
+    }
+
+    // Reset the form
+    function resetForm() {
+        // Clear all form fields
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.value = '';
+        });
+        
+        // Reset form data object
+        Object.keys(formData).forEach(key => {
+            formData[key] = '';
+        });
+    }
+
+    // Update the record count display
+    function updateRecordCount() {
+        const count = savedRecords.length;
+        recordCountElements.forEach(element => {
+            element.textContent = count;
+        });
+    }
+
+    // Show the database view
+    function showDatabaseView() {
+        mainForm.classList.add('hidden');
+        databaseView.classList.remove('hidden');
+        renderDatabaseTable();
+    }
+
+    // Show the form view
+    function showFormView() {
+        databaseView.classList.add('hidden');
+        mainForm.classList.remove('hidden');
+        resetFormVisibility(); // Ensure only step 1 is visible when returning to form
+    }
+
+    // Render the database table
+    function renderDatabaseTable() {
+        if (savedRecords.length === 0) {
+            databaseContent.innerHTML = `
+                <div class="empty-database">
+                    <div class="empty-icon">
+                        <i class="fas fa-database fa-2x" style="color: var(--gray-500);"></i>
+                    </div>
+                    <h4>No records found</h4>
+                    <p>Submit a form to see records here</p>
+                </div>
+            `;
+            return;
+        }
+        
+        let tableHTML = `
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mother's Name</th>
+                            <th>Child's Name</th>
+                            <th>Child Age</th>
+                            <th>Onset Date</th>
+                            <th>Duration</th>
+                            <th>Dehydration</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        savedRecords.forEach(record => {
+            const onsetDate = new Date(record.onsetDate).toLocaleDateString();
+            const dehydrationClass = `dehydration-${record.dehydration || 'none'}`;
+            
+            tableHTML += `
+                <tr>
+                    <td>${record.motherName || 'N/A'}</td>
+                    <td>${record.childName || 'N/A'}</td>
+                    <td>${record.childAge || 'N/A'} ${record.childAgeUnit || ''}</td>
+                    <td>${onsetDate}</td>
+                    <td>${record.duration || 'N/A'} days</td>
+                    <td><span class="dehydration-badge ${dehydrationClass}">${record.dehydration || 'None'}</span></td>
+                    <td>
+                        <button class="btn btn-outline view-record" data-id="${record.id}" style="padding: 0.5rem;">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-outline delete-record" data-id="${record.id}" style="padding: 0.5rem; margin-left: 0.5rem;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        tableHTML += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+        
+        databaseContent.innerHTML = tableHTML;
+        
+        // Add event listeners to action buttons
+        document.querySelectorAll('.view-record').forEach(button => {
+            button.addEventListener('click', function() {
+                const recordId = this.getAttribute('data-id');
+                viewRecord(recordId);
+            });
+        });
+        
+        document.querySelectorAll('.delete-record').forEach(button => {
+            button.addEventListener('click', function() {
+                const recordId = this.getAttribute('data-id');
+                deleteRecord(recordId);
+            });
+        });
+    }
+
+    // View a specific record
+    function viewRecord(recordId) {
+        const record = savedRecords.find(r => r.id === recordId);
+        if (!record) return;
+        
+        // Create a modal to display the full record
+        const modal = document.createElement('div');
+        modal.className = 'modal visible';
+        modal.innerHTML = `
+            <div class="modal-content" style="max-width: 800px; text-align: left;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>Record Details</h3>
+                    <button class="btn btn-outline close-modal" style="padding: 0.5rem;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Mother's Information</h4>
+                        <p><strong>Name:</strong> ${record.motherName || 'N/A'}</p>
+                        <p><strong>Age:</strong> ${record.motherAge || 'N/A'}</p>
+                        <p><strong>Education:</strong> ${record.education || 'N/A'}</p>
+                        <p><strong>Phone:</strong> ${record.phoneNumber || 'N/A'}</p>
+                        <p><strong>Address:</strong> ${record.address || 'N/A'}</p>
+                    </div>
+                    
+                    <div>
+                        <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Child Information</h4>
+                        <p><strong>Name:</strong> ${record.childName || 'N/A'}</p>
+                        <p><strong>Gender:</strong> ${record.gender || 'N/A'}</p>
+                        <p><strong>Birth Date:</strong> ${record.birthDate ? new Date(record.birthDate).toLocaleDateString() : 'N/A'}</p>
+                        <p><strong>Age:</strong> ${record.childAge || 'N/A'} ${record.childAgeUnit || ''}</p>
+                        <p><strong>Birth Weight:</strong> ${record.birthWeight || 'N/A'} kg</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Diarrhea Details</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <p><strong>Onset Date:</strong> ${record.onsetDate ? new Date(record.onsetDate).toLocaleDateString() : 'N/A'}</p>
+                        <p><strong>Duration:</strong> ${record.duration || 'N/A'} days</p>
+                        <p><strong>Frequency:</strong> ${record.frequency || 'N/A'}</p>
+                        <p><strong>Consistency:</strong> ${record.consistency || 'N/A'}</p>
+                        <p><strong>Color:</strong> ${record.color || 'N/A'}</p>
+                        <p><strong>Blood Present:</strong> ${record.bloodPresent || 'N/A'}</p>
+                        <p><strong>Mucus Present:</strong> ${record.mucusPresent || 'N/A'}</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Symptoms & Treatment</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <p><strong>Fever:</strong> ${record.fever || 'N/A'}</p>
+                        <p><strong>Vomiting:</strong> ${record.vomiting || 'N/A'}</p>
+                        <p><strong>Dehydration:</strong> ${record.dehydration || 'N/A'}</p>
+                        <p><strong>Lethargy:</strong> ${record.lethargy || 'N/A'}</p>
+                        <p><strong>Feeding Difficulty:</strong> ${record.feedingDifficulty || 'N/A'}</p>
+                        <p><strong>Breastfeeding:</strong> ${record.breastfeeding || 'N/A'}</p>
+                        <p><strong>ORS Given:</strong> ${record.oralRehydration || 'N/A'}</p>
+                        <p><strong>Hospital Visit:</strong> ${record.hospitalVisit || 'N/A'}</p>
+                    </div>
+                </div>
+                
+                ${record.additionalNotes ? `
+                    <div style="margin-top: 1.5rem;">
+                        <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Additional Notes</h4>
+                        <p>${record.additionalNotes}</p>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Add event listener to close button
+        modal.querySelector('.close-modal').addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+    }
+
+    // Delete a record
+    function deleteRecord(recordId) {
+        if (confirm('Are you sure you want to delete this record?')) {
+            savedRecords = savedRecords.filter(record => record.id !== recordId);
+            localStorage.setItem('diarrheaRecords', JSON.stringify(savedRecords));
+            updateRecordCount();
+            renderDatabaseTable();
+        }
+    }
+
+    // Initialize the application when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
